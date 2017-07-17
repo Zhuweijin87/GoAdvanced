@@ -10,20 +10,20 @@
 using namespace std;
 
 /* 顶点着色器 */
-const char *vertexShaderSrc = "#version 330 core\n"
-"layout (location=0) int vec3 pos;\n"
-"void main()\n"
-"{\n"
-"	gl_Position = vec4(pos.x, pos.y, pos.z, 1.0);\n"
-"}\n";
+const char *vertexShaderSrc =  "#version 330 core\n"
+    "layout (location = 0) in vec3 aPos;\n"
+    "void main()\n"
+    "{\n"
+    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+	"}\0";
 
 /* 编译着色器 */
 const char *fragShaderSrc = "#version 330 core\n"
-"out vec4 FragColor;\n"
-"void main()\n"
-"{\n"
-"	FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-"}\n";
+    "out vec4 FragColor;\n"
+    "void main()\n"
+    "{\n"
+    "   FragColor = vec4(1.0f, 0.3f, 0.2f, 1.0f);\n"
+	"}\n\0";
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -46,7 +46,6 @@ int main()
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-#if 0
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
 		cout << "fail to inti glad\n";
@@ -56,7 +55,7 @@ int main()
 
 	int		ret;
 	char	error[256];
-	/* 编译 VetexShader */
+	/* 编译顶点着色器 */
 	int vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexShaderSrc, nullptr);
 	glCompileShader(vertexShader);
@@ -68,6 +67,7 @@ int main()
 		cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << error << endl;
 	}
 
+	/* */
 	int fragShader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragShader, 1, &fragShaderSrc, nullptr);
 	glCompileShader(fragShader);
@@ -87,10 +87,10 @@ int main()
 	glLinkProgram(shaderProgram);
 
 	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &ret);
-	if (ret)
+	if (!ret)
 	{
 		glGetShaderInfoLog(vertexShader, 256, nullptr, error);
-		cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << error << endl;
+		cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << error << endl;
 	}
 
 	/* 删除着色器 */
@@ -98,9 +98,9 @@ int main()
 	glDeleteShader(fragShader);
 
 	float vertexs[] = {
-		-0.5f, -0.5f, 0.0f, // 左
+		-0.8f, -0.5f, 0.0f, // 左
 		0.5f, -0.5f, 0.0f,	// 右 
-		0.0f,  0.5f, 0.0f	// 前 
+		0.0f,  0.8f, 0.0f	// 前 
 	};
 
 	unsigned int VAO, VBO;
@@ -137,7 +137,7 @@ int main()
 
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
-#endif
+
 	glfwTerminate();
 
     return 0;
