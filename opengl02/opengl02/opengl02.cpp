@@ -145,6 +145,7 @@ int main()
 
 void processInput(GLFWwindow *window)
 {
+	/* °´ÏÂ¼ü ESC ÍË³ö */
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 }
